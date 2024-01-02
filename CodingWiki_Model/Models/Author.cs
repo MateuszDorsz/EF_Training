@@ -23,5 +23,6 @@ namespace CodingWiki_Model.Models
         public string Location { get; set; }
         [NotMapped]
         public string FullName => string.Join(' ', FirstName, LastName);
+        public List<Book> Books { get; set; }
     }
 }
