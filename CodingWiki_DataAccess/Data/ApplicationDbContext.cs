@@ -1,4 +1,4 @@
-﻿using CodingWiki_Model.Models;
+﻿using CodingWiki_Model.Models.FluentModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodingWiki_DataAccess.Data
