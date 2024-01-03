@@ -1,4 +1,6 @@
-﻿using CodingWiki_Model.Models;
+﻿using CodingWiki_DataAccess.FluentConfig;
+using CodingWiki_Model.Models;
+using CodingWiki_Model.Models.FluentModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodingWiki_DataAccess.Data
@@ -13,6 +15,8 @@ namespace CodingWiki_DataAccess.Data
         public DbSet<BookDetail> BookDetails { get; set; }
         public DbSet<Fluent_BookDetail> BookDetails_fluent { get; set; }
         public DbSet<Fluent_Book> Book_fluent { get; set; }
+        public DbSet<Fluent_Author> Author_fluent { get; set; }
+        public DbSet<Fluent_Publisher> Publisher_fluent { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
@@ -21,16 +25,11 @@ namespace CodingWiki_DataAccess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Fluent_BookDetail>().ToTable("Fluent_BookDetails");
-            modelBuilder.Entity<Fluent_BookDetail>().Property(u => u.NumberOfChapters).HasColumnName("NoOfChapters");
-            modelBuilder.Entity<Fluent_BookDetail>().Property(u => u.NumberOfChapters).IsRequired();
-            modelBuilder.Entity<Fluent_BookDetail>().HasKey(u => u.BookDetail_Id);
-
-            modelBuilder.Entity<Fluent_Book>().Property(u => u.ISBN).IsRequired();
-            modelBuilder.Entity<Fluent_Book>().Property(u => u.ISBN).HasMaxLength(50);
-            modelBuilder.Entity<Fluent_Book>().HasKey(u => u.BookId);
-            modelBuilder.Entity<Fluent_Book>().Ignore(u => u.PriceRange);
-
+            modelBuilder.ApplyConfiguration(new FluentAuthorConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookAuthorConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookDetailConfig());
+            modelBuilder.ApplyConfiguration(new FluentPublisherConfig());
 
             modelBuilder.Entity<Publisher>().HasData(
                 new Publisher { Publisher_Id = 1, Location = "Chicago", Name = "Pub 1"},

@@ -8,15 +8,11 @@ using System.Threading.Tasks;
 
 namespace CodingWiki_Model.Models
 {
-    [Table("Publishers")]
     public class Fluent_Publisher
     {
-        [Key]
-        [Column("Publisher_Id")]
         public int Publisher_Id { get; set; }
-        [Required]
         public string Name { get; set; }
         public string Location { get; set; }
-        //public List<Fluent_Book> Books { get; set; }
+        public List<Fluent_Book> Books { get; set; }
     }
 }

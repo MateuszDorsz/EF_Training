@@ -4,6 +4,7 @@ using CodingWiki_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodingWiki_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240102132826_addFluentOneToOneBookToDetail")]
+    partial class addFluentOneToOneBookToDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,21 +187,6 @@ namespace CodingWiki_DataAccess.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("CodingWiki_Model.Models.FluentModels.Fluent_BookAuthorMap", b =>
-                {
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AuthorId", "BookId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("Fluent_BookAuthorMap");
-                });
-
             modelBuilder.Entity("CodingWiki_Model.Models.Fluent_Author", b =>
                 {
                     b.Property<int>("Author_Id")
@@ -243,15 +231,10 @@ namespace CodingWiki_DataAccess.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Publisher_Id")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BookId");
-
-                    b.HasIndex("Publisher_Id");
 
                     b.ToTable("Book_fluent");
                 });
@@ -402,36 +385,6 @@ namespace CodingWiki_DataAccess.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("CodingWiki_Model.Models.FluentModels.Fluent_BookAuthorMap", b =>
-                {
-                    b.HasOne("CodingWiki_Model.Models.Fluent_Author", "Author")
-                        .WithMany("BookAuthorMap")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CodingWiki_Model.Models.Fluent_Book", "Book")
-                        .WithMany("BookAuthorMap")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Book");
-                });
-
-            modelBuilder.Entity("CodingWiki_Model.Models.Fluent_Book", b =>
-                {
-                    b.HasOne("CodingWiki_Model.Models.Fluent_Publisher", "Publisher")
-                        .WithMany("Books")
-                        .HasForeignKey("Publisher_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Publisher");
-                });
-
             modelBuilder.Entity("CodingWiki_Model.Models.Fluent_BookDetail", b =>
                 {
                     b.HasOne("CodingWiki_Model.Models.Fluent_Book", "Book")
@@ -448,21 +401,9 @@ namespace CodingWiki_DataAccess.Migrations
                     b.Navigation("BookDetail");
                 });
 
-            modelBuilder.Entity("CodingWiki_Model.Models.Fluent_Author", b =>
-                {
-                    b.Navigation("BookAuthorMap");
-                });
-
             modelBuilder.Entity("CodingWiki_Model.Models.Fluent_Book", b =>
                 {
-                    b.Navigation("BookAuthorMap");
-
                     b.Navigation("BookDetail");
-                });
-
-            modelBuilder.Entity("CodingWiki_Model.Models.Fluent_Publisher", b =>
-                {
-                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("CodingWiki_Model.Models.Publisher", b =>
